@@ -1,0 +1,25 @@
+package album
+
+import (
+	"postgres/internal/entity"
+	albumUsecase "postgres/internal/usecase/album"
+)
+
+type AlbumHandler interface {
+	Get(id int64) (*entity.Album, error)
+	Create(album *entity.Album) error
+	GetAllAlbum() ([]entity.Album, error)
+	BatchCreate(albums []entity.Album) error
+	Update(album entity.Album) error
+	Delete(id int64) error
+}
+
+type albumHandler struct {
+	albumUsecase albumUsecase.AlbumUsecase
+}
+
+func NewAlbumHandler(albumUsecase albumUsecase.AlbumUsecase) AlbumHandler {
+	return &albumHandler{
+		albumUsecase: albumUsecase,
+	}
+}
