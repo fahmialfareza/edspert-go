@@ -1,12 +1,11 @@
-package repository
+package psql
 
 import (
 	"database/sql"
 	"postgres/internal/entity"
-	"postgres/internal/repository/album/psql"
 )
 
-type AlbumRepository interface {
+type AlbumPostgres interface {
 	Get(id int64) (*entity.Album, error)
 	Create(album *entity.Album) error
 	GetAllAlbum() ([]entity.Album, error)
@@ -15,12 +14,10 @@ type AlbumRepository interface {
 	Delete(id int64) error
 }
 
-type albumRepository struct {
-	postgres psql.AlbumPostgres
+type albumConnection struct {
+	db *sql.DB
 }
 
-func NewAlbumRepository(db *sql.DB) AlbumRepository {
-	return &albumRepository{
-		postgres: psql.NewAlbumPostgres(db),
-	}
+func NewAlbumPostgres(db *sql.DB) AlbumPostgres {
+	return &albumConnection{db: db}
 }

@@ -1,8 +1,7 @@
-package repository
+package psql
 
 import (
 	"gorm/internal/entity"
-	"gorm/internal/repository/album/psql"
 
 	"gorm.io/gorm"
 )
@@ -17,11 +16,11 @@ type AlbumRepository interface {
 }
 
 type albumRepository struct {
-	postgres psql.AlbumRepository
+	db *gorm.DB
 }
 
-func NewAlbumRepository(db *gorm.DB) AlbumRepository {
+func NewAlbumRepository(database *gorm.DB) AlbumRepository {
 	return &albumRepository{
-		postgres: psql.NewAlbumRepository(db),
+		db: database,
 	}
 }
