@@ -1,5 +1,3 @@
-# Working with Database
-
 # Clean Architecture
 
 For this project we will use clean architecture. The clean architecture flow is below.
