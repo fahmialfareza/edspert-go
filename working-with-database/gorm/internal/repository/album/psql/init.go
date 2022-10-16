@@ -19,6 +19,7 @@ type albumRepository struct {
 	db *gorm.DB
 }
 
+// The function is to initialize the album psql repository
 func NewAlbumRepository(database *gorm.DB) AlbumRepository {
 	return &albumRepository{
 		db: database,

@@ -18,6 +18,7 @@ type albumUsecase struct {
 	albumRepository albumRepository.AlbumRepository
 }
 
+// The function is to initialize the album usecase
 func NewAlbumUsecase(albumRepository albumRepository.AlbumRepository) AlbumUsecase {
 	return &albumUsecase{
 		albumRepository: albumRepository,

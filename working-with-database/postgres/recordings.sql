@@ -1,5 +1,3 @@
-CREATE DATABASE recordings;
-
 CREATE TABLE album(
   id BIGSERIAL PRIMARY KEY,
   title VARCHAR(255),

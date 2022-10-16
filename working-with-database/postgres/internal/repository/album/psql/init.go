@@ -18,6 +18,7 @@ type albumConnection struct {
 	db *sql.DB
 }
 
+// The function is to initialize the album psql repository
 func NewAlbumPostgres(db *sql.DB) AlbumPostgres {
 	return &albumConnection{db: db}
 }

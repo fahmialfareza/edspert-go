@@ -19,6 +19,7 @@ type albumRepository struct {
 	postgres psql.AlbumPostgres
 }
 
+// The function is to initialize the album repository
 func NewAlbumRepository(db *sql.DB) AlbumRepository {
 	return &albumRepository{
 		postgres: psql.NewAlbumPostgres(db),

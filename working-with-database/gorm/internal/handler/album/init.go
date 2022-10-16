@@ -18,6 +18,7 @@ type albumHandler struct {
 	albumUsecase albumUsecase.AlbumUsecase
 }
 
+// The function is to initialize the album handler
 func NewAlbumHandler(albumUsecase albumUsecase.AlbumUsecase) AlbumHandler {
 	return &albumHandler{
 		albumUsecase: albumUsecase,
