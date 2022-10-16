@@ -1,11 +1,11 @@
 # Working with Database
 
-## Clean Architecture
+# Clean Architecture
 
 For this project we will use clean architecture. The clean architecture flow is below.
 <img src="clean-architecture.png">
 
-### Flow
+## Flow
 
 1. The request from user, will be handle in `Controller` / `Handler` / `Delivery`.
 2. In the `Controller`, it will validate the request from the user.
