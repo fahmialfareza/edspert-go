@@ -1,9 +1,9 @@
 CREATE DATABASE recordings;
 
 CREATE TABLE album(
-  id INT IDENTITY(1, 1) PRIMARY KEY,
-  title NVARCHAR(255),
-  artist NVARCHAR(255),
+  id BIGSERIAL PRIMARY KEY,
+  title VARCHAR(255),
+  artist VARCHAR(255),
   price INT
 );
 
