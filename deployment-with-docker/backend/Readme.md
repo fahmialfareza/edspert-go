@@ -1,6 +1,6 @@
-# PostgreSQL
+# RestAPI with Gin Gonic
 
-PostgreSQL is the most database that used by big tech companies.
+We will use RestAPI with Gin Gonic for this project.
 
 ## Requirement
 
@@ -8,14 +8,16 @@ PostgreSQL is the most database that used by big tech companies.
 2. For this project, we will need some packages. The dependencies that you need:
 
 ```go
+  go get -u github.com/gin-gonic/gin
   go get github.com/lib/pq
   go get github.com/joho/godotenv
 ```
 
+- Gin is one of frameworks that most used in Go.
 - PQ is package that required to `connect Go to PostgreSQL database`
 - Godotenv is package to read the `.env` file
 
-## How to use
+## How to use without docker
 
 1. You can clone this project.
 2. You have to make database `recordings` in the postgres. Run this to terminal:
@@ -39,3 +41,18 @@ PostgreSQL is the most database that used by big tech companies.
     go run main.go
    ```
 7. You can just run the handler that do you want in `main.go`.
+8. For documentations, you can import `postman-docs/Edspert.postman_collection.json` file to your Postman if you want to test the API.
+
+## How to use with Docker
+
+1. You can clone this project.
+2. Run this command to run docker compose:
+   ```zsh
+      docker-compose up
+   ```
+3. You have create table in Postgres (in docker) with syntax in `recordings.sql`. The postgres in docker you can access with `PGAdmin, DBeaver, so on` with `username: root`, `password: secret`, `port: 5433`, `host:localhost`.
+4. And you can import `postman-docs/Edspert.postman_collection.json` file to your Postman if you want to test the API.
+5. If you want to stop the application, you just need to run:
+   ```zsh
+      docker-compose stop
+   ```

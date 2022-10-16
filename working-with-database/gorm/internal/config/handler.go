@@ -1,14 +1,17 @@
 package config
 
-import albumHandler "gorm/internal/handler/album"
+import (
+	albumHandler "gorm/internal/handler/album"
+	albumUsecase "gorm/internal/usecase/album"
+)
 
 type Handler struct {
 	AlbumHandler albumHandler.AlbumHandler
 }
 
 // Function to initialize handler
-func InitHandler(albumHandler albumHandler.AlbumHandler) Handler {
+func InitHandler(albumUsecase albumUsecase.AlbumUsecase) Handler {
 	return Handler{
-		AlbumHandler: albumHandler,
+		AlbumHandler: albumHandler.NewAlbumHandler(albumUsecase),
 	}
 }

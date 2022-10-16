@@ -1,14 +1,17 @@
 package config
 
-import albumUsecase "gorm/internal/usecase/album"
+import (
+	albumRepository "gorm/internal/repository/album"
+	albumUsecase "gorm/internal/usecase/album"
+)
 
 type Usecase struct {
 	AlbumUsecase albumUsecase.AlbumUsecase
 }
 
 // Function to initialize usecase
-func InitUsecase(albumUsecase albumUsecase.AlbumUsecase) Usecase {
+func InitUsecase(albumRepository albumRepository.AlbumRepository) Usecase {
 	return Usecase{
-		AlbumUsecase: albumUsecase,
+		AlbumUsecase: albumUsecase.NewAlbumUsecase(albumRepository),
 	}
 }

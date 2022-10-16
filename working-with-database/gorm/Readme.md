@@ -22,7 +22,7 @@ GORM is a library that makes it easy for us to connect to the database so we don
 1. You can clone this project.
 2. You can run:
    ```go
-    go mod vendor
+    go mod tidy
    ```
    to install the dependencies.
 3. And finally, you can run with

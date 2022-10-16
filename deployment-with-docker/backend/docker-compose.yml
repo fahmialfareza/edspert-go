@@ -1,0 +1,39 @@
+# Version of compose
+version: "3"
+
+# Services that we have
+services:
+  # The rest api we have build
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: album-api
+    environment:
+      - POSTGRES_URL=postgres://root:secret@db/recordings?sslmode=disable
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    networks:
+      - mynet
+  # We need postgres
+  db:
+    image: postgres
+    container_name: albums-db
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=recordings
+    networks:
+      - mynet
+
+# Define the networks
+networks:
+  course_network:
+    external: true
+    name: course_network
+  mynet:
+    driver: bridge
