@@ -8,7 +8,7 @@ func (handler *albumHandler) Get(id int64) (*entity.Album, error) {
 }
 
 // It will call the function Create in album usecase
-func (handler *albumHandler) Create(album *entity.Album) error {
+func (handler *albumHandler) Create(album *entity.Album) (*entity.Album, error) {
 	return handler.albumUsecase.Create(album)
 }
 
@@ -18,12 +18,12 @@ func (handler *albumHandler) GetAllAlbum() ([]entity.Album, error) {
 }
 
 // It will call the function BatchCreate in album usecase
-func (handler *albumHandler) BatchCreate(albums []entity.Album) error {
+func (handler *albumHandler) BatchCreate(albums []entity.Album) ([]entity.Album, error) {
 	return handler.albumUsecase.BatchCreate(albums)
 }
 
 // It will call the function Update in album usecase
-func (handler *albumHandler) Update(album entity.Album) error {
+func (handler *albumHandler) Update(album entity.Album) (entity.Album, error) {
 	return handler.albumUsecase.Update(album)
 }
 

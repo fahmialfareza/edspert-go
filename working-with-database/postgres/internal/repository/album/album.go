@@ -5,7 +5,7 @@ import (
 )
 
 // It will call the function Create in psql/album
-func (repo *albumRepository) Create(album *entity.Album) error {
+func (repo *albumRepository) Create(album *entity.Album) (int64, error) {
 	return repo.postgres.Create(album)
 }
 
@@ -20,7 +20,7 @@ func (repo *albumRepository) GetAllAlbum() ([]entity.Album, error) {
 }
 
 // It will call the function BatchCreate in psql/album
-func (repo *albumRepository) BatchCreate(albums []entity.Album) error {
+func (repo *albumRepository) BatchCreate(albums []entity.Album) ([]int64, error) {
 	return repo.postgres.BatchCreate(albums)
 }
 

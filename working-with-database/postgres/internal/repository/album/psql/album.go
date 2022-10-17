@@ -9,11 +9,11 @@ import (
 )
 
 // Create is function to create album to database
-func (repo *albumConnection) Create(album *entity.Album) error {
+func (repo *albumConnection) Create(album *entity.Album) (int64, error) {
 	// The query insert
 	query := `
-        INSERT INTO public.album (id, title, artist, price) 
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO public.album (title, artist, price) 
+        VALUES ($1, $2, $3)
         RETURNING id`
 
 	// Define the contect with 15 timeout
@@ -21,7 +21,12 @@ func (repo *albumConnection) Create(album *entity.Album) error {
 	defer cancel()
 
 	// Run the query insert
-	return repo.db.QueryRowContext(ctx, query, album.Title, album.Artist, album.Price).Scan(&album.ID)
+	err := repo.db.QueryRowContext(ctx, query, album.Title, album.Artist, album.Price).Scan(&album.ID)
+	if err != nil {
+		return 0, err
+	}
+
+	return album.ID, nil
 }
 
 // Get is function to get specific album by id from database
@@ -98,11 +103,13 @@ func (repo *albumConnection) GetAllAlbum() ([]entity.Album, error) {
 }
 
 // BatchCreate is function to insert some albums in once to database
-func (repo *albumConnection) BatchCreate(albums []entity.Album) error {
+func (repo *albumConnection) BatchCreate(albums []entity.Album) ([]int64, error) {
+	var IDs []int64
+
 	// Begin transaction
 	tx, err := repo.db.Begin()
 	if err != nil {
-		return err
+		return IDs, nil
 	}
 	// If any error, the transaction will be rollback
 	defer tx.Rollback()
@@ -112,26 +119,31 @@ func (repo *albumConnection) BatchCreate(albums []entity.Album) error {
 	defer cancel()
 
 	// The query insert
-	query := `INSERT INTO album (title, artist, price) VALUES ($1, $2, $3)`
+	query := `INSERT INTO album (title, artist, price) VALUES ($1, $2, $3) RETURNING id`
 
 	// Loop every album
 	for _, album := range albums {
+		var id int64
+
 		// Run query insert of every album to database
-		_, err := tx.ExecContext(ctx, query, album.Title, album.Artist, album.Price)
+		err := tx.QueryRowContext(ctx, query, album.Title, album.Artist, album.Price).Scan(&id)
 		if err != nil {
 			log.Printf("error execute insert err: %v", err)
 			continue
 		}
+
+		// Add the new id to IDs variable
+		IDs = append(IDs, id)
 	}
 
 	// Commit the transaction
 	err = tx.Commit()
 	// If any error
 	if err != nil {
-		return err
+		return IDs, err
 	}
 
-	return nil
+	return IDs, nil
 }
 
 // Update is function to update album in database
@@ -179,7 +191,7 @@ func (repo *albumConnection) Delete(id int64) error {
 	if err != nil {
 		return err
 	}
-	
+
 	fmt.Printf("Affected delete : %d", rows)
 	return nil
 }
