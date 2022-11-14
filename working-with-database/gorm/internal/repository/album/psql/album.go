@@ -49,8 +49,7 @@ func (repository *albumRepository) GetAlbumById(id int64) (entity.Album, error) 
 
 // CreateAlbum is function to create album to database
 func (repository *albumRepository) CreateAlbum(album entity.Album) error {
-	// 
-	tx := repository.db.Create(album)
+	tx := repository.db.Create(&album)
 	if tx.Error != nil {
 		return tx.Error
 	}
@@ -93,6 +92,6 @@ func (repository *albumRepository) DeleteAlbum(id int) error {
 	// Delete the album that has been gotten from albumUpdate
 	repository.db.Delete(albumUpdate)
 	log.Print("Success delete Album")
-	
+
 	return nil
 }
