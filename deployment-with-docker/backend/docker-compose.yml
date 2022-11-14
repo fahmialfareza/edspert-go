@@ -1,5 +1,5 @@
 # Version of compose
-version: "3"
+version: "3.9"
 
 # Services that we have
 services:
@@ -12,11 +12,13 @@ services:
     environment:
       - POSTGRES_URL=postgres://root:secret@db/recordings?sslmode=disable
     ports:
-      - "4000:4000"
+      - "3000:4000"
     depends_on:
       - db
     networks:
       - mynet
+    stdin_open: true # docker run -i
+    tty: true # docker run -t
   # We need postgres
   db:
     image: postgres

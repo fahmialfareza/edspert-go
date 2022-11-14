@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1
 
-##
-## Build
-##
+#
+# Build
+#
 FROM golang:1.19 AS build
 
 # Define the working directory
@@ -17,9 +17,9 @@ RUN go mod tidy
 # Build the go project to binary
 RUN go build -o /app/album-api main.go
 
-##
-## Deploy
-##
+#
+# Deploy
+#
 FROM gcr.io/distroless/base-debian10
 
 # Define the working directory
