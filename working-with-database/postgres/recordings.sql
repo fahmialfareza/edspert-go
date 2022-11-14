@@ -1,3 +1,4 @@
+-- Create table album
 CREATE TABLE album(
   id BIGSERIAL PRIMARY KEY,
   title VARCHAR(255),
@@ -5,6 +6,7 @@ CREATE TABLE album(
   price INT
 );
 
+-- Insert some data to album table
 INSERT INTO
   album (title, artist, price)
 VALUES

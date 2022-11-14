@@ -34,7 +34,7 @@ func (repo *albumConnection) Get(id int64) (*entity.Album, error) {
 	// The query select
 	query := `
         SELECT id, title, artist, price
-        FROM public.album
+        FROM album
         WHERE id = $1`
 
 	var album entity.Album
@@ -63,7 +63,7 @@ func (repo *albumConnection) Get(id int64) (*entity.Album, error) {
 func (repo *albumConnection) GetAllAlbum() ([]entity.Album, error) {
 	// The query select
 	query := `
-		SELECT id, title, artist, price
+		SELECT id, artist, title, price
 		FROM album`
 
 	// Define the contect with 15 timeout
@@ -86,8 +86,8 @@ func (repo *albumConnection) GetAllAlbum() ([]entity.Album, error) {
 		// Set to the album variable
 		err := rows.Scan(
 			&album.ID,
-			&album.Title,
 			&album.Artist,
+			&album.Title,
 			&album.Price,
 		)
 		// If any error
