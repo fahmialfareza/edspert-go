@@ -17,7 +17,10 @@ func main() {
 	// Get the config from .env file
 	err := godotenv.Load(".env")
 	if err != nil {
-		log.Fatalf("Error loading .env file")
+		err = godotenv.Load()
+		if err != nil {
+			log.Fatalf("Error loading .env file")
+		}
 	}
 
 	// Load db config
@@ -44,5 +47,5 @@ func main() {
 	}
 
 	// Run the gin gonic in port 5000
-	r.Run(":4000")
+	r.Run("0.0.0.0:4000")
 }
