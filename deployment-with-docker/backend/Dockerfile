@@ -7,7 +7,7 @@ FROM golang:1.19
 WORKDIR /app
 
 # Copy all files to container
-COPY . .env .
+COPY . .
 
 # Install all dependencies
 RUN go mod tidy
