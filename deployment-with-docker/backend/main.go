@@ -14,10 +14,11 @@ func main() {
 	// Initialize gin
 	r := gin.Default()
 
-	// Get the config from .env file
-	err := godotenv.Load(".env")
-	if err != nil {
-		err = godotenv.Load()
+	// Get the environment
+	env := os.Getenv("ENV")
+	if env != "production" {
+		// Get the config from .env file
+		err := godotenv.Load(".env")
 		if err != nil {
 			log.Fatalf("Error loading .env file")
 		}
