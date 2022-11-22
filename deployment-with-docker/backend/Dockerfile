@@ -3,6 +3,8 @@
 #
 FROM golang:1.19
 
+ARG PORT
+
 # Define the working directory
 WORKDIR /app
 
@@ -16,7 +18,7 @@ RUN go mod tidy
 RUN go build -o /app/album-api main.go
 
 # Expose port 4000, then localhost can access the container
-EXPOSE 4000
+EXPOSE ${PORT}
 
 # Run the binary build of go project
 ENTRYPOINT ["/app/album-api"]
