@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"postgres/internal/config"
@@ -23,6 +24,8 @@ func main() {
 			log.Fatalf("Error loading .env file")
 		}
 	}
+
+	port := os.Getenv("PORT")
 
 	// Load db config
 	db, err := config.OpenDB(os.Getenv("POSTGRES_URL"), true)
@@ -48,5 +51,6 @@ func main() {
 	}
 
 	// Run the gin gonic in port 5000
-	r.Run("0.0.0.0:4000")
+	runWithPort := fmt.Sprintf("0.0.0.0:%s", port)
+	r.Run(runWithPort)
 }
