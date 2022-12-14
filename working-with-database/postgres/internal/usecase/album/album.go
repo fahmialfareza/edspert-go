@@ -28,23 +28,8 @@ func (usecase *albumUsecase) Create(album *entity.Album) (*entity.Album, error) 
 
 // It will call the function GetAllAlbum in album repository
 func (usecase *albumUsecase) GetAllAlbum() ([]entity.Album, error) {
-	var albums []entity.Album
-
-	albums, err := usecase.albumRepository.GetAllAlbumCache()
+	albums, err := usecase.albumRepository.GetAllAlbum()
 	if err != nil {
-		return albums, err
-	}
-
-	if len(albums) > 0 {
-		return albums, nil
-	}
-
-	albums, err = usecase.albumRepository.GetAllAlbum()
-	if err != nil {
-		return albums, err
-	}
-
-	if err = usecase.albumRepository.SetAllAlbumCache(albums); err != nil {
 		return albums, err
 	}
 

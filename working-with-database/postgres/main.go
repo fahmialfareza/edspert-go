@@ -25,11 +25,8 @@ func main() {
 	}
 	defer config.CloseDB(db)
 
-	// Load redis
-	cache := config.OpenCache(os.Getenv("REDIS"))
-
 	// Init clean arch
-	repository := config.InitRepository(db, cache)
+	repository := config.InitRepository(db)
 	usecase := config.InitUsecase(repository.AlbumRepository)
 	handler := config.InitHandler(usecase.AlbumUsecase)
 

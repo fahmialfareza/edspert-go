@@ -34,10 +34,3 @@ func (repo *albumRepository) Delete(id int64) error {
 	return repo.postgres.Delete(id)
 }
 
-func (repo *albumRepository) GetAllAlbumCache() ([]entity.Album, error) {
-	return repo.cache.GetAllAlbum()
-}
-
-func (repo *albumRepository) SetAllAlbumCache(albums []entity.Album) error {
-	return repo.cache.SetAllAlbum(albums)
-}
