@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"database/sql"
 	"postgres/internal/entity"
 	"postgres/internal/repository/album/cache"
@@ -10,18 +11,18 @@ import (
 )
 
 type AlbumRepository interface {
-	Get(id int64) (*entity.Album, error)
-	Create(album *entity.Album) (int64, error)
-	GetAllAlbum() ([]entity.Album, error)
-	BatchCreate(albums []entity.Album) ([]int64, error)
-	Update(album entity.Album) error
-	Delete(id int64) error
+	Get(ctx context.Context, id int64) (*entity.Album, error)
+	Create(ctx context.Context, album *entity.Album) (int64, error)
+	GetAllAlbum(ctx context.Context) ([]entity.Album, error)
+	BatchCreate(ctx context.Context, albums []entity.Album) ([]int64, error)
+	Update(ctx context.Context, album entity.Album) error
+	Delete(ctx context.Context, id int64) error
 
-	GetAlbumCache(id int64) (*entity.Album, error)
-	GetAllAlbumCache() ([]entity.Album, error)
-	SetAlbumCache(id int64, album entity.Album) error
-	SetAllAlbumCache(albums []entity.Album) error
-	DeleteAlbumCache(id int64) error
+	GetAlbumCache(ctx context.Context, id int64) (*entity.Album, error)
+	GetAllAlbumCache(ctx context.Context) ([]entity.Album, error)
+	SetAlbumCache(ctx context.Context, id int64, album entity.Album) error
+	SetAllAlbumCache(ctx context.Context, albums []entity.Album) error
+	DeleteAlbumCache(ctx context.Context, id int64) error
 }
 
 type albumRepository struct {

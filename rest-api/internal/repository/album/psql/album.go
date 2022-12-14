@@ -9,7 +9,7 @@ import (
 )
 
 // Create is function to create album to database
-func (repo *albumConnection) Create(album *entity.Album) (int64, error) {
+func (repo *albumConnection) Create(ctx context.Context, album *entity.Album) (int64, error) {
 	// The query insert
 	query := `
         INSERT INTO public.album (title, artist, price) 
@@ -17,7 +17,7 @@ func (repo *albumConnection) Create(album *entity.Album) (int64, error) {
         RETURNING id`
 
 	// Define the contect with 15 timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 15*time.Second)
 	defer cancel()
 
 	// Run the query insert
@@ -30,7 +30,7 @@ func (repo *albumConnection) Create(album *entity.Album) (int64, error) {
 }
 
 // Get is function to get specific album by id from database
-func (repo *albumConnection) Get(id int64) (*entity.Album, error) {
+func (repo *albumConnection) Get(ctx context.Context, id int64) (*entity.Album, error) {
 	// The query select
 	query := `
         SELECT id, title, artist, price
@@ -40,7 +40,7 @@ func (repo *albumConnection) Get(id int64) (*entity.Album, error) {
 	var album entity.Album
 
 	// Define the contect with 15 timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 15*time.Second)
 	defer cancel()
 
 	// Run the query and find the specific album and then set the result to album variable
@@ -60,14 +60,14 @@ func (repo *albumConnection) Get(id int64) (*entity.Album, error) {
 }
 
 // GetAllAlbum is function to get all albums from database
-func (repo *albumConnection) GetAllAlbum() ([]entity.Album, error) {
+func (repo *albumConnection) GetAllAlbum(ctx context.Context) ([]entity.Album, error) {
 	// The query select
 	query := `
 		SELECT id, artist, title, price
 		FROM album`
 
 	// Define the contect with 15 timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
 
 	var albums []entity.Album
@@ -103,7 +103,7 @@ func (repo *albumConnection) GetAllAlbum() ([]entity.Album, error) {
 }
 
 // BatchCreate is function to insert some albums in once to database
-func (repo *albumConnection) BatchCreate(albums []entity.Album) ([]int64, error) {
+func (repo *albumConnection) BatchCreate(ctx context.Context, albums []entity.Album) ([]int64, error) {
 	var IDs []int64
 
 	// Begin transaction
@@ -115,7 +115,7 @@ func (repo *albumConnection) BatchCreate(albums []entity.Album) ([]int64, error)
 	defer tx.Rollback()
 
 	// Define the contect with 15 timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 15*time.Second)
 	defer cancel()
 
 	// The query insert
@@ -147,9 +147,9 @@ func (repo *albumConnection) BatchCreate(albums []entity.Album) ([]int64, error)
 }
 
 // Update is function to update album in database
-func (repo *albumConnection) Update(album entity.Album) error {
+func (repo *albumConnection) Update(ctx context.Context, album entity.Album) error {
 	// Define the contect with 15 timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 15*time.Second)
 	defer cancel()
 
 	// The query update
@@ -172,9 +172,9 @@ func (repo *albumConnection) Update(album entity.Album) error {
 }
 
 // Delete is function to delete album in database
-func (repo *albumConnection) Delete(id int64) error {
+func (repo *albumConnection) Delete(ctx context.Context, id int64) error {
 	// Define the contect with 15 timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 15*time.Second)
 	defer cancel()
 
 	// The query delete
