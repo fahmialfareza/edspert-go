@@ -3,6 +3,8 @@ package config
 import (
 	"database/sql"
 	albumRepository "postgres/internal/repository/album"
+
+	"github.com/go-redis/redis/v8"
 )
 
 type Repository struct {
@@ -10,8 +12,8 @@ type Repository struct {
 }
 
 // Function to initialize repository
-func InitRepository(db *sql.DB) Repository {
+func InitRepository(db *sql.DB, cache *redis.Client) Repository {
 	return Repository{
-		AlbumRepository: albumRepository.NewAlbumRepository(db),
+		AlbumRepository: albumRepository.NewAlbumRepository(db, cache),
 	}
 }
