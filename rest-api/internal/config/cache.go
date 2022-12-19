@@ -2,10 +2,10 @@ package config
 
 import "github.com/go-redis/redis/v8"
 
-func OpenCache(address string) *redis.Client {
+func OpenCache(address string, password string) *redis.Client {
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     address,
-		Password: "", // no password set
+		Password: password, // no password set
 		DB:       0,  // use default DB
 	})
 

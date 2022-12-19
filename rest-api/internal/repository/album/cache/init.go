@@ -20,6 +20,6 @@ type albumConnection struct {
 }
 
 // The function is to initialize the album psql repository
-func NewAlbumPostgres(cache *redis.Client) AlbumPostgres {
+func NewAlbumRedis(cache *redis.Client) AlbumPostgres {
 	return &albumConnection{client: cache}
 }

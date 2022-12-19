@@ -34,6 +34,6 @@ type albumRepository struct {
 func NewAlbumRepository(db *sql.DB, client *redis.Client) AlbumRepository {
 	return &albumRepository{
 		postgres: psql.NewAlbumPostgres(db),
-		cache:    cache.NewAlbumPostgres(client),
+		cache:    cache.NewAlbumRedis(client),
 	}
 }
