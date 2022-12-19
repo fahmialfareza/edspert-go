@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"postgres/internal/config"
+	"postgres/internal/entity"
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
@@ -34,26 +35,26 @@ func main() {
 	// You can use/change the code below if you want to test the handler
 
 	// Get All Albums
-	albums, err := handler.AlbumHandler.GetAllAlbum()
-	if err != nil {
-		panic(err)
-	}
-	b, _ := json.Marshal(albums)
-	fmt.Println(string(b))
-	fmt.Println("Berhasil")
-
-	// Create
-	// album, err := handler.AlbumHandler.Create(&entity.Album{
-	// 	Title:  "Apa Ini 2",
-	// 	Artist: "Peterpan",
-	// 	Price:  50000,
-	// })
+	// albums, err := handler.AlbumHandler.GetAllAlbum()
 	// if err != nil {
 	// 	panic(err)
 	// }
-	// b, _ := json.Marshal(album)
+	// b, _ := json.Marshal(albums)
 	// fmt.Println(string(b))
 	// fmt.Println("Berhasil")
+
+	// Create
+	album, err := handler.AlbumHandler.Create(&entity.Album{
+		Title:  "Apa Ini",
+		Artist: "Peterpan",
+		Price:  50000,
+	})
+	if err != nil {
+		panic(err)
+	}
+	b, _ := json.Marshal(album)
+	fmt.Println(string(b))
+	fmt.Println("Berhasil")
 
 	// Batch create
 	// albums, err := handler.AlbumHandler.BatchCreate([]entity.Album{

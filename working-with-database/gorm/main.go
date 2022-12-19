@@ -40,33 +40,33 @@ func main() {
 	// 	panic(err)
 	// }
 
-	handler.AlbumHandler.BulkInsertAlbum([]entity.Album{
-		{
-			Title:  "Mandi Pagi",
-			Artist: "Peterpan",
-			Price:  50000,
-		},
-		{
-			Title:  "Mandi Sore",
-			Artist: "Peterpan",
-			Price:  50000,
-		},
-	})
+	// handler.AlbumHandler.BulkInsertAlbum([]entity.Album{
+	// 	{
+	// 		Title:  "Mandi Pagi",
+	// 		Artist: "Peterpan",
+	// 		Price:  50000,
+	// 	},
+	// 	{
+	// 		Title:  "Mandi Sore",
+	// 		Artist: "Peterpan",
+	// 		Price:  50000,
+	// 	},
+	// })
 
-	albums, err := handler.AlbumHandler.GetAllAlbum()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(albums)
+	// albums, err := handler.AlbumHandler.GetAllAlbum()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Println(albums)
 
 	handler.AlbumHandler.UpdateAlbum(entity.Album{
-		ID:     5,
+		ID:     1,
 		Title:  "Mandi Pagi2",
 		Artist: "Peterpan",
 		Price:  50000,
 	})
 
-	album, err := handler.AlbumHandler.GetAlbumById(5)
+	album, err := handler.AlbumHandler.GetAlbumById(1)
 	if err != nil {
 		panic(err)
 	}
