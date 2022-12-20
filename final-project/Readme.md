@@ -9,7 +9,7 @@ The final project, you will create `Rest API with Gin Gonic`. The requirements a
 
 ### Response Format
 
-```json
+```
 {
   "status": bool,
   "message": string,
