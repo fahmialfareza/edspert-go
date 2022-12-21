@@ -20,7 +20,7 @@ func (handler *albumHandler) Get(context *gin.Context) {
 	}
 
 	// Call the usecase
-	album, err := handler.albumUsecase.Get(id)
+	album, err := handler.albumUsecase.Get(context, id)
 	if err != nil {
 		res := helper.BuildErrorResponse("Internal Server Error", err.Error(), helper.EmptyObj{})
 		context.AbortWithStatusJSON(http.StatusInternalServerError, res)
@@ -44,21 +44,21 @@ func (handler *albumHandler) Create(context *gin.Context) {
 	}
 
 	// Call the usecase
-	err = handler.albumUsecase.Create(&requestBody)
+	album, err := handler.albumUsecase.Create(context, &requestBody)
 	if err != nil {
 		res := helper.BuildErrorResponse("Internal Server Error", err.Error(), helper.EmptyObj{})
 		context.AbortWithStatusJSON(http.StatusInternalServerError, res)
 		return
 	}
 
-	res := helper.BuildResponse(true, "OK!", helper.EmptyObj{})
+	res := helper.BuildResponse(true, "OK!", album)
 	context.JSON(http.StatusOK, res)
 }
 
 // It will call the function GetAllAlbum in album usecase
 func (handler *albumHandler) GetAllAlbum(context *gin.Context) {
 	// Get all albums from usecase
-	albums, err := handler.albumUsecase.GetAllAlbum()
+	albums, err := handler.albumUsecase.GetAllAlbum(context)
 	if err != nil {
 		res := helper.BuildErrorResponse("Internal Server Error", err.Error(), helper.EmptyObj{})
 		context.AbortWithStatusJSON(http.StatusInternalServerError, res)
@@ -81,14 +81,14 @@ func (handler *albumHandler) BatchCreate(context *gin.Context) {
 		return
 	}
 
-	err = handler.albumUsecase.BatchCreate(requestBody)
+	albums, err := handler.albumUsecase.BatchCreate(context, requestBody)
 	if err != nil {
 		res := helper.BuildErrorResponse("Internal Server Error", err.Error(), helper.EmptyObj{})
 		context.AbortWithStatusJSON(http.StatusInternalServerError, res)
 		return
 	}
 
-	res := helper.BuildResponse(true, "OK!", helper.EmptyObj{})
+	res := helper.BuildResponse(true, "OK!", albums)
 	context.JSON(http.StatusOK, res)
 }
 
@@ -116,14 +116,14 @@ func (handler *albumHandler) Update(context *gin.Context) {
 	requestBody.ID = id
 
 	// Call the usecase
-	err = handler.albumUsecase.Update(requestBody)
+	album, err := handler.albumUsecase.Update(context, requestBody)
 	if err != nil {
 		res := helper.BuildErrorResponse("Internal Server Error", err.Error(), helper.EmptyObj{})
 		context.AbortWithStatusJSON(http.StatusInternalServerError, res)
 		return
 	}
 
-	res := helper.BuildResponse(true, "OK!", helper.EmptyObj{})
+	res := helper.BuildResponse(true, "OK!", album)
 	context.JSON(http.StatusOK, res)
 }
 
@@ -137,7 +137,7 @@ func (handler *albumHandler) Delete(context *gin.Context) {
 		return
 	}
 
-	err = handler.albumUsecase.Delete(id)
+	err = handler.albumUsecase.Delete(context, id)
 	if err != nil {
 		res := helper.BuildErrorResponse("Internal Server Error", err.Error(), helper.EmptyObj{})
 		context.AbortWithStatusJSON(http.StatusInternalServerError, res)

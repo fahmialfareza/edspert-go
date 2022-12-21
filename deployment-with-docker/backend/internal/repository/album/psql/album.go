@@ -9,7 +9,7 @@ import (
 )
 
 // Create is function to create album to database
-func (repo *albumConnection) Create(album *entity.Album) error {
+func (repo *albumConnection) Create(ctx context.Context, album *entity.Album) (int64, error) {
 	// The query insert
 	query := `
         INSERT INTO public.album (title, artist, price) 
@@ -17,25 +17,30 @@ func (repo *albumConnection) Create(album *entity.Album) error {
         RETURNING id`
 
 	// Define the contect with 15 timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 15*time.Second)
 	defer cancel()
 
 	// Run the query insert
-	return repo.db.QueryRowContext(ctx, query, album.Title, album.Artist, album.Price).Scan(&album.ID)
+	err := repo.db.QueryRowContext(ctx, query, album.Title, album.Artist, album.Price).Scan(&album.ID)
+	if err != nil {
+		return 0, err
+	}
+
+	return album.ID, nil
 }
 
 // Get is function to get specific album by id from database
-func (repo *albumConnection) Get(id int64) (*entity.Album, error) {
+func (repo *albumConnection) Get(ctx context.Context, id int64) (*entity.Album, error) {
 	// The query select
 	query := `
         SELECT id, title, artist, price
-        FROM public.album
+        FROM album
         WHERE id = $1`
 
 	var album entity.Album
 
 	// Define the contect with 15 timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 15*time.Second)
 	defer cancel()
 
 	// Run the query and find the specific album and then set the result to album variable
@@ -55,14 +60,14 @@ func (repo *albumConnection) Get(id int64) (*entity.Album, error) {
 }
 
 // GetAllAlbum is function to get all albums from database
-func (repo *albumConnection) GetAllAlbum() ([]entity.Album, error) {
+func (repo *albumConnection) GetAllAlbum(ctx context.Context) ([]entity.Album, error) {
 	// The query select
 	query := `
-		SELECT id, title, artist, price
+		SELECT id, artist, title, price
 		FROM album`
 
 	// Define the contect with 15 timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
 
 	var albums []entity.Album
@@ -81,8 +86,8 @@ func (repo *albumConnection) GetAllAlbum() ([]entity.Album, error) {
 		// Set to the album variable
 		err := rows.Scan(
 			&album.ID,
-			&album.Title,
 			&album.Artist,
+			&album.Title,
 			&album.Price,
 		)
 		// If any error
@@ -98,46 +103,53 @@ func (repo *albumConnection) GetAllAlbum() ([]entity.Album, error) {
 }
 
 // BatchCreate is function to insert some albums in once to database
-func (repo *albumConnection) BatchCreate(albums []entity.Album) error {
+func (repo *albumConnection) BatchCreate(ctx context.Context, albums []entity.Album) ([]int64, error) {
+	var IDs []int64
+
 	// Begin transaction
 	tx, err := repo.db.Begin()
 	if err != nil {
-		return err
+		return IDs, nil
 	}
 	// If any error, the transaction will be rollback
 	defer tx.Rollback()
 
 	// Define the contect with 15 timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 15*time.Second)
 	defer cancel()
 
 	// The query insert
-	query := `INSERT INTO album (title, artist, price) VALUES ($1, $2, $3)`
+	query := `INSERT INTO album (title, artist, price) VALUES ($1, $2, $3) RETURNING id`
 
 	// Loop every album
 	for _, album := range albums {
+		var id int64
+
 		// Run query insert of every album to database
-		_, err := tx.ExecContext(ctx, query, album.Title, album.Artist, album.Price)
+		err := tx.QueryRowContext(ctx, query, album.Title, album.Artist, album.Price).Scan(&id)
 		if err != nil {
 			log.Printf("error execute insert err: %v", err)
 			continue
 		}
+
+		// Add the new id to IDs variable
+		IDs = append(IDs, id)
 	}
 
 	// Commit the transaction
 	err = tx.Commit()
 	// If any error
 	if err != nil {
-		return err
+		return IDs, err
 	}
 
-	return nil
+	return IDs, nil
 }
 
 // Update is function to update album in database
-func (repo *albumConnection) Update(album entity.Album) error {
+func (repo *albumConnection) Update(ctx context.Context, album entity.Album) error {
 	// Define the contect with 15 timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 15*time.Second)
 	defer cancel()
 
 	// The query update
@@ -160,9 +172,9 @@ func (repo *albumConnection) Update(album entity.Album) error {
 }
 
 // Delete is function to delete album in database
-func (repo *albumConnection) Delete(id int64) error {
+func (repo *albumConnection) Delete(ctx context.Context, id int64) error {
 	// Define the contect with 15 timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 15*time.Second)
 	defer cancel()
 
 	// The query delete

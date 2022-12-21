@@ -42,3 +42,29 @@ We will use RestAPI with Gin Gonic for this project.
    ```
 7. You can just run the handler that do you want in `main.go`.
 8. For documentations, you can import `postman-docs/Edspert.postman_collection.json` file to your Postman if you want to test the API.
+
+## How to use with Docker
+
+1. You can clone this project.
+2. Run this command to build docker image:
+   ```zsh
+      docker build -t [image_name] .
+   ```
+3. Run the image into container
+   ```zsh
+      docker run -p 4000:4000 [image_name]
+   ```
+
+## How to use with Docker Compose
+
+1. You can clone this project.
+2. Run this command to run docker compose:
+   ```zsh
+      docker-compose up
+   ```
+3. You have create table in Postgres (in docker) with syntax in `recordings.sql`. The postgres in docker you can access with `PGAdmin, DBeaver, so on` with `username: root`, `password: secret`, `port: 5433`, `host:localhost`.
+4. And you can import `postman-docs/Edspert.postman_collection.json` file to your Postman if you want to test the API.
+5. If you want to stop the application, you just need to run:
+   ```zsh
+      docker-compose stop
+   ```

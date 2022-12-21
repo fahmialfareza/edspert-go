@@ -12,18 +12,21 @@ import (
 )
 
 func main() {
-	// Initialize gin
-	r := gin.Default()
-
 	// Get the environment
 	env := os.Getenv("ENV")
-	if env != "production" {
+	if env == "production" || env == "staging" {
+		// Set to release mode
+		gin.SetMode(gin.ReleaseMode)
+	} else {
 		// Get the config from .env file
 		err := godotenv.Load(".env")
 		if err != nil {
 			log.Fatalf("Error loading .env file")
 		}
 	}
+
+	// Initialize gin
+	r := gin.Default()
 
 	port := os.Getenv("PORT")
 
@@ -34,8 +37,14 @@ func main() {
 	}
 	defer config.CloseDB(db)
 
+	// Load redis
+	cache, err := config.OpenCache(os.Getenv("REDIS_URL"))
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	// Init clean arch
-	repository := config.InitRepository(db)
+	repository := config.InitRepository(db, cache)
 	usecase := config.InitUsecase(repository.AlbumRepository)
 	handler := config.InitHandler(usecase.AlbumUsecase)
 

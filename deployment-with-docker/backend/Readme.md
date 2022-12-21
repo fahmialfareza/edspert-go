@@ -46,6 +46,18 @@ We will use RestAPI with Gin Gonic for this project.
 ## How to use with Docker
 
 1. You can clone this project.
+2. Run this command to build docker image:
+   ```zsh
+      docker build -t [image_name] .
+   ```
+3. Run the image into container
+   ```zsh
+      docker run -p 4000:4000 [image_name]
+   ```
+
+## How to use with Docker Compose
+
+1. You can clone this project.
 2. Run this command to run docker compose:
    ```zsh
       docker-compose up
