@@ -48,3 +48,30 @@ The final project, you will create `Rest API with Gin Gonic`. The requirements a
 - Cache (Optional) `Yes` means that you can add set/get/del data to/from Cache (Redis).
 - Cache (Optional) `No` means that you do not need to add cache for he specific API.
 - Cache is not required, it is optional but if you want to go with it, just do it.
+
+### Tables
+
+#### Artists
+
+| Column | Type      | Description    | Required |
+| ------ | --------- | -------------- | -------- |
+| id     | BIGSERIAL | Primary key    | Yes      |
+| name   | VARCHAR   | Name of artist | Yes      |
+
+#### Albums
+
+| Column    | Type    | Description           | Required |
+| --------- | ------- | --------------------- | -------- |
+| id        | SERIAL  | Primary key           | Yes      |
+| artist_id | BIGINT  | Foreign key of artist | Yes      |
+| title     | VARCHAR | Name of album         | Yes      |
+| price     | NUMERIC | Price of album        | Yes      |
+
+#### Songs
+
+| Column   | Type    | Description          | Required |
+| -------- | ------- | -------------------- | -------- |
+| id       | SERIAL  | Primary key          | Yes      |
+| album_id | BIGINT  | Foreign key of album | Yes      |
+| title    | VARCHAR | Name of album        | Yes      |
+| lyrics   | VARCHAR | Lyrics               | No       |
