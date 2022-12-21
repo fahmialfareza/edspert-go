@@ -38,7 +38,10 @@ func main() {
 	defer config.CloseDB(db)
 
 	// Load redis
-	cache := config.OpenCache(os.Getenv("REDIS"), "")
+	cache, err := config.OpenCache(os.Getenv("REDIS_URL"))
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	// Init clean arch
 	repository := config.InitRepository(db, cache)
